@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\stl.cpp" />
+    <ClCompile Include="src\projection.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\stl.h" />
+    <ClInclude Include="inc\bmp\bitmap_image.hpp">
+      <Filter>inc\bmp</Filter>
+    </ClInclude>
+    <ClInclude Include="src\projection.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="inc">
+      <UniqueIdentifier>{7a6bf3f6-2d9d-4560-92ec-96508f4ea8a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="inc\bmp">
+      <UniqueIdentifier>{0ae8430f-2098-4659-a567-0550ab231018}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
