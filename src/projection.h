@@ -1,14 +1,19 @@
 #ifndef PROJECTION_H
 #define PROJECTION_H
 
-#include"bmp\bitmap_image.hpp"
+#include "bmp\bitmap_image.hpp"
 
+#define PI						3.14159f
+#define ANTIALIASING_THRESHOLD	0.40f
+#define DEG_2_RAD(deg)			(deg * PI / 180.0f)
+
+// Origin is at top-left. x is left-to-right, y is top-to-bottom
 class projection {
 
 private:
-	unsigned int	m_xsize;
-	unsigned int	m_ysize;
-	bool**			m_grid;
+	int			m_xsize;
+	int			m_ysize;
+	bool**		m_grid;
 public:
 
 	// Constructors & Destructors
@@ -17,6 +22,8 @@ public:
 	projection& projection::operator=(const projection& rhs);
 
 	// Member Functions
+	void draw_bounding_box();
+	void rotate(float deg);
 	void print_on_bmp(bitmap_image& bmp, int x_offset, int y_offset, const rgb_t color);
 
 	// Accessors & mutators

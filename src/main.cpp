@@ -10,9 +10,16 @@ int main() {
 	bmp.clear(0xFF);
 
 	projection test_proj = test_stl.to_projection();
-	test_proj.print_on_bmp(bmp, 100, 100, jet_colormap[2]);
+	test_proj.print_on_bmp(bmp, 50, 100, palette_colormap[e_blue]);
+
+	test_proj.rotate(90.0f);
+	test_proj.print_on_bmp(bmp, 225, 100, palette_colormap[e_green]);
+
+	test_proj.rotate(45.0f);
+	test_proj.draw_bounding_box();
+	test_proj.print_on_bmp(bmp, 350, 100, palette_colormap[e_red]);
 
 	bmp.save_image("./img/test.bmp");
-
+	
 	return 0;
 }

@@ -1,0 +1,11 @@
+#ifndef COMMON_H
+#define COMMON_H
+
+#define MAX2(a, b)			(std::max(a, b))
+#define MIN2(a, b)			(std::min(a, b))
+#define MAX3(a, b, c)		(MAX2(a, MAX2(b, c)))
+#define MIN3(a, b, c)		(MIN2(a, MIN2(b, c)))
+#define MAX4(a, b, c, d)	(MAX2(MAX2(a, b), MAX2(c, d)))
+#define MIN4(a, b, c, d)	(MIN2(MIN2(a, b), MIN2(c, d)))
+
+#endif

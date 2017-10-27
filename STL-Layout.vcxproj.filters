@@ -11,6 +11,7 @@
       <Filter>inc\bmp</Filter>
     </ClInclude>
     <ClInclude Include="src\projection.h" />
+    <ClInclude Include="src\common.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="inc">
