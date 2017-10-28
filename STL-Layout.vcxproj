@@ -19,15 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\config.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\projection.cpp" />
     <ClCompile Include="src\stl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\bmp\bitmap_image.hpp" />
+    <ClInclude Include="src\config.h" />
     <ClInclude Include="src\common.h" />
     <ClInclude Include="src\projection.h" />
     <ClInclude Include="src\stl.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cfg\default.cfg" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

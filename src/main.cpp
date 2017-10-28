@@ -1,4 +1,5 @@
 #include "bmp\bitmap_image.hpp"
+#include "config.h"
 #include "stl.h"
 
 int main() {
@@ -8,6 +9,8 @@ int main() {
 
 	bitmap_image bmp(600, 400);
 	bmp.clear(0xFF);
+
+	config cfg;
 
 	projection test_proj = test_stl.to_projection();
 	test_proj.print_on_bmp(bmp, 50, 100, palette_colormap[e_blue]);

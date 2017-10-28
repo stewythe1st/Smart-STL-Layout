@@ -4,6 +4,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\stl.cpp" />
     <ClCompile Include="src\projection.cpp" />
+    <ClCompile Include="src\config.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stl.h" />
@@ -12,6 +13,7 @@
     </ClInclude>
     <ClInclude Include="src\projection.h" />
     <ClInclude Include="src\common.h" />
+    <ClInclude Include="src\config.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="inc">
@@ -20,5 +22,13 @@
     <Filter Include="inc\bmp">
       <UniqueIdentifier>{0ae8430f-2098-4659-a567-0550ab231018}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cfg">
+      <UniqueIdentifier>{8811df08-8ff4-468a-8eab-9ab66a11b665}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cfg\default.cfg">
+      <Filter>cfg</Filter>
+    </None>
   </ItemGroup>
 </Project>
