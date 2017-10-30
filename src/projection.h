@@ -3,9 +3,8 @@
 
 #include "bmp\bitmap_image.hpp"
 
-#define PI						3.14159f
-#define ANTIALIASING_THRESHOLD	0.40f
-#define DEG_2_RAD(deg)			(deg * PI / 180.0f)
+#define ANTIALIASING_THRESHOLD	0.50f
+
 
 // Origin is at top-left. x is left-to-right, y is top-to-bottom
 class projection {
@@ -14,6 +13,13 @@ private:
 	int			m_xsize;
 	int			m_ysize;
 	bool**		m_grid;
+
+	float		m_rot;
+
+	int			m_xsize_base;
+	int			m_ysize_base;
+	bool**		m_grid_base;
+
 public:
 
 	// Constructors & Destructors
@@ -28,6 +34,7 @@ public:
 
 	// Accessors & mutators
 	inline void set_pixel(int x, int y) { m_grid[x][y] = true; };
+	inline void set_origin_pixel(int x, int y) { m_grid_base[x][y] = m_grid[x][y] = true; };
 	inline void clear_pixel(int x, int y) { m_grid[x][y] = false; };
 	inline bool get_pixel(int x, int y) const { return m_grid[x][y]; };
 
