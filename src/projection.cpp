@@ -14,12 +14,31 @@ projection::projection() {
 	m_grid			= nullptr;
 }
 
+
+projection::~projection() {
+	// Delete old grids
+	for (int x = 0; x < m_xsize; x++) {
+		delete[] m_grid[x];
+	}
+	delete[] m_grid;
+	for (int x = 0; x < m_xsize_base; x++) {
+		delete[] m_grid_base[x];
+	}
+	delete[] m_grid_base;
+	return;
+}
+
+
 projection::projection(int xnew, int ynew) {
+
+	// Assign new data
 	m_xsize = xnew;
 	m_ysize = ynew;
 	m_xsize_base = xnew;
 	m_ysize_base = ynew;
 	m_rot	= 0;
+
+	// Allocate new grids
 	m_grid_base = new bool*[m_xsize];
 	m_grid = new bool*[m_xsize];	
 	for (int x = 0; x < m_xsize; x++) {
@@ -34,20 +53,44 @@ projection::projection(int xnew, int ynew) {
 }
 
 
+projection::projection(const projection& p) {
+	*this = p;
+	return;
+}
+
+
 projection& projection::operator=(const projection& rhs) {
+
+	// Delete old grids
+	for (int x = 0; x < m_xsize; x++) {
+		delete[] m_grid[x];
+	}
+	delete[] m_grid;
+	for (int x = 0; x < m_xsize_base; x++) {
+		delete[] m_grid_base[x];
+	}
+	delete[] m_grid_base;
+
+	// Assign new data
 	m_xsize = rhs.m_xsize;
 	m_ysize = rhs.m_ysize;
 	m_xsize_base = rhs.m_xsize_base;
 	m_ysize_base = rhs.m_ysize_base;
 	m_rot	= rhs.m_rot;
-	m_grid_base = new bool*[m_xsize];
+
+	// Allocate new grids
 	m_grid = new bool*[m_xsize];
 	for (int x = 0; x < m_xsize; x++) {
-		m_grid_base[x] = new bool[m_ysize];
 		m_grid[x] = new bool[m_ysize];
 		for (int y = 0; y < m_ysize; y++) {
-			m_grid_base[x][y] = rhs.m_grid_base[x][y];
 			m_grid[x][y] = rhs.m_grid[x][y];
+		}
+	}
+	m_grid_base = new bool*[m_xsize_base];
+	for (int x = 0; x < m_xsize_base; x++) {
+		m_grid_base[x] = new bool[m_ysize_base];
+		for (int y = 0; y < m_ysize_base; y++) {
+			m_grid_base[x][y] = rhs.m_grid_base[x][y];
 		}
 	}
 	return *this;

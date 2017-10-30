@@ -24,7 +24,9 @@ public:
 
 	// Constructors & Destructors
 	projection();
+	~projection();
 	projection(int x, int y);
+	projection(const projection& p);
 	projection& projection::operator=(const projection& rhs);
 
 	// Member Functions
