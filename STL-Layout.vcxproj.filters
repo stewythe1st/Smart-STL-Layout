@@ -5,6 +5,7 @@
     <ClCompile Include="src\stl.cpp" />
     <ClCompile Include="src\projection.cpp" />
     <ClCompile Include="src\config.cpp" />
+    <ClCompile Include="src\state.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stl.h" />
@@ -14,6 +15,7 @@
     <ClInclude Include="src\projection.h" />
     <ClInclude Include="src\common.h" />
     <ClInclude Include="src\config.h" />
+    <ClInclude Include="src\state.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="inc">

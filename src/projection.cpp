@@ -54,7 +54,28 @@ projection::projection(int xnew, int ynew) {
 
 
 projection::projection(const projection& p) {
-	*this = p;
+	// Assign new data
+	m_xsize = p.m_xsize;
+	m_ysize = p.m_ysize;
+	m_xsize_base = p.m_xsize_base;
+	m_ysize_base = p.m_ysize_base;
+	m_rot = p.m_rot;
+
+	// Allocate new grids
+	m_grid = new bool*[m_xsize];
+	for (int x = 0; x < m_xsize; x++) {
+		m_grid[x] = new bool[m_ysize];
+		for (int y = 0; y < m_ysize; y++) {
+			m_grid[x][y] = p.m_grid[x][y];
+		}
+	}
+	m_grid_base = new bool*[m_xsize_base];
+	for (int x = 0; x < m_xsize_base; x++) {
+		m_grid_base[x] = new bool[m_ysize_base];
+		for (int y = 0; y < m_ysize_base; y++) {
+			m_grid_base[x][y] = p.m_grid_base[x][y];
+		}
+	}
 	return;
 }
 
@@ -195,7 +216,7 @@ void projection::rotate(float rot) {
 void projection::print_on_bmp(bitmap_image& bmp, int x_offset, int y_offset, const rgb_t color) {
 	for (int x = 0; x < m_xsize; x++) {
 		for (int y = 0; y < m_ysize; y++) {
-			if (m_grid[x][y]) {
+			if (m_grid[x][y] && x + x_offset < (int)bmp.width() && x + x_offset >= 0 && y + y_offset < (int)bmp.height() && y + y_offset >= 0) {
 				bmp.set_pixel(x + x_offset, y + y_offset, color);
 			}
 		}

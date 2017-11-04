@@ -22,6 +22,7 @@
     <ClCompile Include="src\config.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\projection.cpp" />
+    <ClCompile Include="src\state.cpp" />
     <ClCompile Include="src\stl.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -29,6 +30,7 @@
     <ClInclude Include="src\config.h" />
     <ClInclude Include="src\common.h" />
     <ClInclude Include="src\projection.h" />
+    <ClInclude Include="src\state.h" />
     <ClInclude Include="src\stl.h" />
   </ItemGroup>
   <ItemGroup>
