@@ -21,6 +21,8 @@ int main() {
 
 	s.randomize();
 
+	s.calc_fitness();
+
 	s.print("./img/test.bmp");
 	
 	return 0;

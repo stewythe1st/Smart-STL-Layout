@@ -6,6 +6,9 @@
 #include "projection.h"
 #include <string>
 
+#define OVERLAP_PENALTY			5
+#define OUT_OF_BOUNDS_PENALTY	3
+
 
 class state {
 private:
@@ -16,6 +19,8 @@ private:
 	
 	int							m_xsize = 500;
 	int							m_ysize = 500;
+
+	int							m_fitness;
 	
 public:
 
@@ -28,6 +33,7 @@ public:
 	void add_projection(projection p);
 	void randomize();
 	void print(std::string filename);
+	void calc_fitness();
 
 };
 

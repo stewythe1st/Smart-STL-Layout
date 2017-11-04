@@ -216,7 +216,7 @@ void projection::rotate(float rot) {
 void projection::print_on_bmp(bitmap_image& bmp, int x_offset, int y_offset, const rgb_t color) {
 	for (int x = 0; x < m_xsize; x++) {
 		for (int y = 0; y < m_ysize; y++) {
-			if (m_grid[x][y] && x + x_offset < (int)bmp.width() && x + x_offset >= 0 && y + y_offset < (int)bmp.height() && y + y_offset >= 0) {
+			if (m_grid[x][y] && x + x_offset < (int)bmp.width() && y + y_offset < (int)bmp.height()) {
 				bmp.set_pixel(x + x_offset, y + y_offset, color);
 			}
 		}

@@ -39,7 +39,8 @@ public:
 	inline void set_origin_pixel(int x, int y) { m_grid_base[x][y] = m_grid[x][y] = true; };
 	inline void clear_pixel(int x, int y) { m_grid[x][y] = false; };
 	inline bool get_pixel(int x, int y) const { return m_grid[x][y]; };
-
+	inline int get_xsize() { return m_xsize; };
+	inline int get_ysize() { return m_ysize; };
 };
 
 
