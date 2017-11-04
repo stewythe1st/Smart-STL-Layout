@@ -28,12 +28,16 @@ struct config {
 	std::string	srcfile = DEFAULT_FILE;
 	int			seed;
 	int			seedType;
+	int			runs;
+	int			evals;
 	int			mu;
 	int			lambda;
 
 	std::map<std::string, cfg_value> defs = {
 		{ "seed", cfg_value{ &seed, INT } },
 		{ "seedType", cfg_value{ &seedType, INT } },
+		{ "runs", cfg_value{ &runs, INT } },
+		{ "evals", cfg_value{ &evals, INT } },
 		{ "mu", cfg_value{ &mu, INT } },
 		{ "lambda", cfg_value{ &lambda, INT } }
 	};

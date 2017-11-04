@@ -26,15 +26,41 @@ int main(int argc, char *argv[]) {
 	// Open and convert STL
 	m.open("./stl/batarang.stl");
 	p = m.to_projection();
-	state s(500, 500);
+	state local_best(500, 500);
+	state global_best(500, 500);
 
-	// State testing
-	s.add_projection(p);
-	s.add_projection(p);
-	s.add_projection(p);
-	s.randomize();
-	s.calc_fitness();
-	s.print("./img/test.bmp");
+	// Runs
+	for (int run = 0; run < cfg.runs; run++) {
+		std::cout << std::endl << "Run " << run + 1 << std::endl;
+
+		// Evals
+		for (int eval = 0; eval < cfg.evals; eval++) {
+
+			// Generate random state
+			state* s = new state(500, 500);
+			s->add_projection(p);
+			s->add_projection(p);
+			s->add_projection(p);
+			s->randomize();
+			s->calc_fitness();
+
+			// Keep track of local best fitness
+			if (eval == 0 || s->get_fitness() < local_best.get_fitness()) {
+				local_best = *s;
+				std::cout << eval << "\t" << local_best.get_fitness() << std::endl;
+			}
+
+			delete s;
+		}
+
+		// Keep track of local best fitness
+		if (local_best.get_fitness() < global_best.get_fitness()) {
+			global_best = local_best;
+		}
+	}
+	
+	// Print global best
+	global_best.print("./img/default.bmp");
 
 	return 0;
 }

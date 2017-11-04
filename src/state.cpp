@@ -1,6 +1,17 @@
 
 #include "state.h"
 
+state& state::operator=(const state& rhs) {
+	m_projections = rhs.m_projections;
+	m_x = rhs.m_x;
+	m_y = rhs.m_y;
+	m_rot = rhs.m_rot;
+	m_xsize = rhs.m_xsize;
+	m_ysize = rhs.m_ysize;
+	m_fitness = rhs.m_fitness;
+	return *this;
+}
+
 void state::add_projection(projection p){
 	m_projections.push_back(p);
     m_x.push_back(-1);
@@ -55,7 +66,7 @@ void state::calc_fitness() {
 				if (p->get_pixel(x, y)) {
 
 					// If out of bounds
-					if (x + m_x[i] > p->get_xsize() && y + m_y[i] > p->get_ysize() ) {
+					if (x + m_x[i] >= p->get_xsize() || y + m_y[i] >= p->get_ysize() ) {
 						m_fitness += OUT_OF_BOUNDS_PENALTY;
 					}
 

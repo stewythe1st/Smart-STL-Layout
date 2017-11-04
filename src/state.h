@@ -20,7 +20,7 @@ private:
 	int							m_xsize = 500;
 	int							m_ysize = 500;
 
-	int							m_fitness;
+	int							m_fitness = INT_MAX;
 	
 public:
 
@@ -28,12 +28,16 @@ public:
 	state() {};
 	state(int x, int y) { m_xsize = x; m_ysize = y; };
 	~state() {};
+	state& operator=(const state& rhs);
 
 	// Member Functions
 	void add_projection(projection p);
 	void randomize();
 	void print(std::string filename);
 	void calc_fitness();
+
+	// Accessors and Mutators
+	int get_fitness() { return m_fitness; };
 
 };
 
