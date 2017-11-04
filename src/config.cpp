@@ -11,6 +11,8 @@ bool config::read(std::string filename) {
 	std::size_t		split;
 	std::string		lhs;
 	std::string		rhs;
+	std::map<std::string, cfg_value>::iterator
+					value;
 
 	// Open file
 	srcfile = filename;
@@ -37,11 +39,14 @@ bool config::read(std::string filename) {
 			rhs = line.substr(split + 1);
 		}
 		
-		if (defs.find(lhs) != defs.end()) {
-			*defs[lhs] = atoi(rhs.c_str());
-		}
-
-		
+		// Parse string to value
+		value = defs.find(lhs);
+		if (value != defs.end()) {
+			if ((*value).second.type == INT)
+				*(int*)(*value).second.address = atoi(rhs.c_str());
+			else if ((*value).second.type == STRING)
+				*(std::string*)(*value).second.address = rhs;
+		}		
 	}
 
 	// Clean up

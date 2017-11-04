@@ -8,14 +8,35 @@
 #define DEFAULT_FILE		("default.cfg")
 #define CFG_PATH			("./cfg/")
 
-class config {
+enum seedType {
+	SEED_STATIC,
+	SEED_TIME_BASED
+};
 
-private:
+enum dataType {
+	INT,
+	STRING
+};
+
+struct cfg_value {
+	void* address;
+	dataType type;
+};
+
+struct config {
+
 	std::string	srcfile = DEFAULT_FILE;
-	int	mu = 10;
-	int	lambda = 20;
-	std::map<std::string, int*>	defs = { {"mu",&mu},{"lambda",&lambda} };
-public:
+	int			seed;
+	int			seedType;
+	int			mu;
+	int			lambda;
+
+	std::map<std::string, cfg_value> defs = {
+		{ "seed", cfg_value{ &seed, INT } },
+		{ "seedType", cfg_value{ &seedType, INT } },
+		{ "mu", cfg_value{ &mu, INT } },
+		{ "lambda", cfg_value{ &lambda, INT } }
+	};
 
 	// Constructors & Destructors
 	inline config() { read(DEFAULT_FILE); };
