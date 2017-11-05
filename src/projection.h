@@ -14,12 +14,6 @@ private:
 	int			m_ysize;
 	bool**		m_grid;
 
-	float		m_rot;
-
-	int			m_xsize_base;
-	int			m_ysize_base;
-	bool**		m_grid_base;
-
 public:
 
 	// Constructors & Destructors
@@ -31,12 +25,11 @@ public:
 
 	// Member Functions
 	void draw_bounding_box();
-	void rotate(float deg);
-	void print_on_bmp(bitmap_image& bmp, int x_offset, int y_offset, const rgb_t color);
+	bool** rotate(float rot, int& xsize_out, int& ysize_out);
+	void print_on_bmp(bitmap_image& bmp, int x_offset, int y_offset, float rot, const rgb_t color);
 
 	// Accessors & mutators
 	inline void set_pixel(int x, int y) { m_grid[x][y] = true; };
-	inline void set_origin_pixel(int x, int y) { m_grid_base[x][y] = m_grid[x][y] = true; };
 	inline void clear_pixel(int x, int y) { m_grid[x][y] = false; };
 	inline bool get_pixel(int x, int y) const { return m_grid[x][y]; };
 	inline int get_xsize() { return m_xsize; };

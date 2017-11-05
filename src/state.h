@@ -12,7 +12,7 @@
 
 class state {
 private:
-	std::vector<projection>		m_projections;
+	std::vector<projection>*	m_projections;
 	std::vector<int>			m_x;
 	std::vector<int>			m_y;
 	std::vector<int>			m_rot;
@@ -26,15 +26,15 @@ public:
 
 	// Constructors & Destructors
 	state() {};
-	state(int x, int y) { m_xsize = x; m_ysize = y; };
+	state(std::vector<projection>* p, int x, int y);
 	~state() {};
 	state& operator=(const state& rhs);
 
 	// Member Functions
-	void add_projection(projection p);
 	void randomize();
 	void print(std::string filename);
 	void calc_fitness();
+	void nPointCrossover(state* parent1, state* parent2, int n);
 
 	// Accessors and Mutators
 	int get_fitness() { return m_fitness; };

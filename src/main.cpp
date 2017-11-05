@@ -1,5 +1,6 @@
 #include "bmp\bitmap_image.hpp"
 #include "config.h"
+#include "population.h"
 #include "state.h"
 #include "stl.h"
 #include <chrono>
@@ -7,9 +8,11 @@
 int main(int argc, char *argv[]) {
 
 	// Variables
-	stl m;
-	projection p;
+	stl batarang_stl;
+	projection batarang_proj;
 	config cfg;
+	population p;
+	std::vector<projection> projs;
 
 	// Get configuration
 	if (argc > 1) {
@@ -23,11 +26,27 @@ int main(int argc, char *argv[]) {
 	}
 	srand(cfg.seed);
 
-	// Open and convert STL
-	m.open("./stl/batarang.stl");
-	p = m.to_projection();
-	state local_best(500, 500);
-	state global_best(500, 500);
+	// Construct initial state
+	batarang_stl.open("./stl/batarang.stl");
+	batarang_proj = batarang_stl.to_projection();
+	projs.push_back(batarang_proj);
+	projs.push_back(batarang_proj);
+	projs.push_back(batarang_proj);
+	projs.push_back(batarang_proj);
+	state initial(&projs, 500, 500);
+	initial.randomize();
+	initial.print("./img/test.bmp");
+	initial.calc_fitness();
+	std::cout << initial.get_fitness() << std::endl;
+
+	/*
+	state local_best(&projs, 500, 500);
+	state global_best(&projs, 500, 500);
+
+	/*
+	for (int i = 0; i < cfg.mu; i++) {
+		pop.add(initial);
+	}
 
 	// Runs
 	for (int run = 0; run < cfg.runs; run++) {
@@ -37,20 +56,15 @@ int main(int argc, char *argv[]) {
 		for (int eval = 0; eval < cfg.evals; eval++) {
 
 			// Generate random state
-			state* s = new state(500, 500);
-			s->add_projection(p);
-			s->add_projection(p);
-			s->add_projection(p);
-			s->randomize();
-			s->calc_fitness();
+			state s = initial;
+			s.randomize();
+			s.calc_fitness();
 
 			// Keep track of local best fitness
-			if (eval == 0 || s->get_fitness() < local_best.get_fitness()) {
-				local_best = *s;
+			if (eval == 0 || s.get_fitness() < local_best.get_fitness()) {
+				local_best = s;
 				std::cout << eval << "\t" << local_best.get_fitness() << std::endl;
 			}
-
-			delete s;
 		}
 
 		// Keep track of local best fitness
@@ -61,6 +75,6 @@ int main(int argc, char *argv[]) {
 	
 	// Print global best
 	global_best.print("./img/default.bmp");
-
+	*/
 	return 0;
 }
