@@ -1,6 +1,7 @@
 
 #include "common.h"
 #include "stl.h"
+#include <climits>
 #include <fstream>
 #include <iostream>
 

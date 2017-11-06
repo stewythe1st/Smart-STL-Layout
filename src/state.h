@@ -4,6 +4,7 @@
 
 #include "bmp/bitmap_image.hpp"
 #include "projection.h"
+#include <climits>
 #include <string>
 
 #define OVERLAP_PENALTY			5

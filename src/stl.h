@@ -2,7 +2,7 @@
 #define STL_H
 
 
-#include "bmp\bitmap_image.hpp"
+#include "bmp/bitmap_image.hpp"
 #include "projection.h"
 #include <string>
 

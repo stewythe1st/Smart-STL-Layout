@@ -2,6 +2,7 @@
 Debug/*
 x64/*
 *.o
+*.out
 *.exe
 *.user
 

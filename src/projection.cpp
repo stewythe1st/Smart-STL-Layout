@@ -2,6 +2,7 @@
 #include "common.h"
 #include "projection.h"
 #include "cmath"
+#include <climits>
 
 
 projection::projection() {
@@ -99,7 +100,7 @@ bool** projection::rotate(float rot, int& xsize_out, int& ysize_out) {
 	int origin_rotated;
 	float xorigin = (float)m_xsize / 2.0f;
 	float yorigin = (float)m_ysize / 2.0f;
-	float intpart;
+	double intpart;
 	float xnew;
 	float ynew;
 	int xmax = INT_MIN;

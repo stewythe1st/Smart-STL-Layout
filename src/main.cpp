@@ -1,4 +1,4 @@
-#include "bmp\bitmap_image.hpp"
+#include "bmp/bitmap_image.hpp"
 #include "config.h"
 #include "common.h"
 #include "population.h"

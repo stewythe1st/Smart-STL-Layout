@@ -1,7 +1,7 @@
 #ifndef PROJECTION_H
 #define PROJECTION_H
 
-#include "bmp\bitmap_image.hpp"
+#include "bmp/bitmap_image.hpp"
 
 #define ANTIALIASING_THRESHOLD	0.50f
 
@@ -21,7 +21,7 @@ public:
 	~projection();
 	projection(int x, int y);
 	projection(const projection& p);
-	projection& projection::operator=(const projection& rhs);
+	projection& operator=(const projection& rhs);
 
 	// Member Functions
 	void draw_bounding_box();
