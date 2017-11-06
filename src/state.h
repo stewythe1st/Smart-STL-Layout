@@ -12,7 +12,7 @@
 
 class state {
 private:
-	std::vector<projection>*	m_projections;
+	std::vector<projection>*	m_states;
 	std::vector<int>			m_x;
 	std::vector<int>			m_y;
 	std::vector<int>			m_rot;
@@ -35,6 +35,8 @@ public:
 	void print(std::string filename);
 	void calc_fitness();
 	void nPointCrossover(state* parent1, state* parent2, int n);
+	void randResetMutate();
+	void creepMutate(int creepDist);
 
 	// Accessors and Mutators
 	int get_fitness() { return m_fitness; };

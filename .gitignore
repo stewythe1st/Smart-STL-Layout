@@ -5,6 +5,7 @@ x64/*
 *.exe
 *.user
 
-# Keep ./img/ folder
+# Keep img & log folders, but not contents
 img/*
+log/*
 !.gitkeep

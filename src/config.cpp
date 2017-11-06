@@ -44,6 +44,8 @@ bool config::read(std::string filename) {
 		if (value != defs.end()) {
 			if ((*value).second.type == INT)
 				*(int*)(*value).second.address = atoi(rhs.c_str());
+			else if ((*value).second.type == FLOAT)
+				*(float*)(*value).second.address = (float)atof(rhs.c_str());
 			else if ((*value).second.type == STRING)
 				*(std::string*)(*value).second.address = rhs;
 		}		

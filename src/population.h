@@ -6,23 +6,31 @@
 #include <vector>
 
 
-class population {
+class pool {
 
 private:
 
-	std::vector<state>	m_projections;
+	std::vector<state>	m_states;
+
+	// Private member functions
+	int kTournament(int k, bool best, bool replacement);
 	
 public:
 
 	// Constructors & Destructors
-	population() {};
-	~population() {};
+	pool() {};
+	~pool() {};
 
 	// Member Functions
-
+	state* chooseParentKTourn(int k);
+	void reduceByKTourn(size_t size, int k);
+	inline void empty() { m_states.clear(); };
+	state* get_best();
+	float get_average();
 
 	// Accessors and Mutators
-	inline void add(state s) { m_projections.push_back(s); };
+	inline void add(state s) { m_states.push_back(s); };
+	inline state* get(int i) { return &m_states[i]; };
 
 };
 

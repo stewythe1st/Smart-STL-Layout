@@ -3,7 +3,7 @@
 
 
 state::state(std::vector<projection>* p, int x, int y) {
-	m_projections = p;
+	m_states = p;
 	m_xsize = x;
 	m_ysize = y;
 	for (int i = 0; i < p->size(); i++) {
@@ -15,7 +15,7 @@ state::state(std::vector<projection>* p, int x, int y) {
 
 
 state& state::operator=(const state& rhs) {
-	m_projections = rhs.m_projections;
+	m_states = rhs.m_states;
 	m_x = rhs.m_x;
 	m_y = rhs.m_y;
 	m_rot = rhs.m_rot;
@@ -27,7 +27,7 @@ state& state::operator=(const state& rhs) {
 
 
 void state::randomize() {
-	for (int i = 0; i < m_projections->size(); i++) {
+	for (int i = 0; i < m_states->size(); i++) {
 		m_x[i] = rand() % m_xsize;
 		m_y[i] = rand() % m_ysize;
 		m_rot[i] = rand() % 360;
@@ -39,8 +39,8 @@ void state::randomize() {
 void state::print(std::string filename) {
 	bitmap_image bmp(m_xsize, m_ysize);
 	bmp.clear(0xFF);
-	for (int i = 0; i < m_projections->size(); i++) {
-		(*m_projections)[i].print_on_bmp(bmp, m_x[i], m_y[i], (float)m_rot[i], palette_colormap[rand() % e_black]);
+	for (int i = 0; i < m_states->size(); i++) {
+		(*m_states)[i].print_on_bmp(bmp, m_x[i], m_y[i], (float)m_rot[i], palette_colormap[rand() % e_black]);
 	}
 	bmp.save_image(filename);
 	return;
@@ -68,8 +68,8 @@ void state::calc_fitness() {
 	}
 
 	// Mark each projection on the grid
-	for (int i = 0; i < m_projections->size(); i++) {
-		p = &(*m_projections)[i];
+	for (int i = 0; i < m_states->size(); i++) {
+		p = &(*m_states)[i];
 
 		proj_grid = p->rotate((float)m_rot[i], xsize, ysize);
 
@@ -112,6 +112,82 @@ void state::calc_fitness() {
 	return;
 }
 
+
 void state::nPointCrossover(state* parent1, state* parent2, int n) {
+
+	// Variables
+	int*	crossoverPts;
+	int		size = (int)m_states->size();
+
+	// Sanity check
+	if (n > size) {
+		n = size;
+	}
+
+	// Generate swap points
+	crossoverPts = new int[n];
+	for (int i = 0; i < n; i++) {
+		crossoverPts[i] = rand() % size;
+	}
+	std::sort(crossoverPts, crossoverPts + n);
+
+	// Walk down chromosome and copy genes into offspring
+	int j = 0;
+	for (int i = 0; i < size; i++) {
+
+		// Every time we hit a crossover point, swap parents
+		if (i >= crossoverPts[j] && j < n) {
+			std::swap(parent1, parent2);
+			j++;
+		}
+		m_x[i] = parent1->m_x[i];
+		m_y[i] = parent1->m_y[i];
+		m_rot[i] = parent1->m_rot[i];
+	}
+
+	// Clean up
+	delete[] crossoverPts;
+
+	return;
+}
+
+
+void state::creepMutate(int creepDist) {
+
+	// Pick random values
+	int idx = rand() % m_states->size();
+	int attrib = rand() % 3;
+	int creep = rand() % (2 * creepDist) - creepDist;
+
+	// Apply creep
+	switch (attrib) {
+	case 0:
+		m_x[idx] += creepDist;
+		break;
+	case 1:
+		m_y[idx] += creepDist;
+		break;
+	case 2:
+		m_rot[idx] = (m_rot[idx] + creepDist) % 360;
+		break;
+	}
+
+	return;
+}
+
+
+void state::randResetMutate() {
+
+	// Variables
+	int idx;
+
+	// Pick a random gene
+	idx = rand() % m_states->size();
+
+	// Choose new random coordinates
+	m_x[idx] = rand() % m_xsize;
+	m_y[idx] = rand() % m_ysize;
+	m_rot[idx] = rand() % 360;
+
 	return;
 }
