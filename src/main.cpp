@@ -109,9 +109,7 @@ int main(int argc, char *argv[]) {
 			log << run << "," << generation << "," << eval << "," << FORMAT_FLOAT(0) << population.get_average() << "," << best->get_fitness() << std::endl;
 			if (best->get_fitness() < local_best.get_fitness()) {
 				local_best = *best;
-				//std::cout << eval << "\t" << local_best.get_fitness() << std::endl;
 			}
-			local_best.print("./img/" + cfg.name + ".bmp");
 
 			// Termination test
 			if (local_best.get_fitness() == 0) {
@@ -119,18 +117,10 @@ int main(int argc, char *argv[]) {
 			}
 		}
 		
-		// Keep track of local best fitness
-		if (local_best.get_fitness() < global_best.get_fitness()) {
-			global_best = local_best;
-		}
-
-		// Keep track of glocal best fitness
-		global_best.print("./img/" + cfg.name + ".bmp");
+		// Print output
+		global_best.print("./img/" + cfg.name + "_run_" + std::to_string(run) + ".bmp");
 	}
 	
-	// Print global best
-	global_best.print("./img/" + cfg.name + ".bmp");
-
 	// Clean up
 	log.close();
 	

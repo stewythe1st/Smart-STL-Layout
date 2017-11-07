@@ -6,7 +6,7 @@ state::state(std::vector<projection>* p, int x, int y) {
 	m_states = p;
 	m_xsize = x;
 	m_ysize = y;
-	for (int i = 0; i < p->size(); i++) {
+	for (size_t i = 0; i < p->size(); i++) {
 		m_x.push_back(0);
 		m_y.push_back(0);
 		m_rot.push_back(0);
@@ -27,7 +27,7 @@ state& state::operator=(const state& rhs) {
 
 
 void state::randomize() {
-	for (int i = 0; i < m_states->size(); i++) {
+	for (size_t i = 0; i < m_states->size(); i++) {
 		m_x[i] = rand() % m_xsize;
 		m_y[i] = rand() % m_ysize;
 		m_rot[i] = rand() % 360;
@@ -39,8 +39,8 @@ void state::randomize() {
 void state::print(std::string filename) {
 	bitmap_image bmp(m_xsize, m_ysize);
 	bmp.clear(0xFF);
-	for (int i = 0; i < m_states->size(); i++) {
-		(*m_states)[i].print_on_bmp(bmp, m_x[i], m_y[i], (float)m_rot[i], palette_colormap[rand() % e_black]);
+	for (size_t i = 0; i < m_states->size(); i++) {
+		(*m_states)[i].print_on_bmp(bmp, m_x[i], m_y[i], (float)m_rot[i]);
 	}
 	bmp.save_image(filename);
 	return;
@@ -68,7 +68,7 @@ void state::calc_fitness() {
 	}
 
 	// Mark each projection on the grid
-	for (int i = 0; i < m_states->size(); i++) {
+	for (size_t i = 0; i < m_states->size(); i++) {
 		p = &(*m_states)[i];
 
 		proj_grid = p->rotate((float)m_rot[i], xsize, ysize);
