@@ -75,7 +75,7 @@ void stl::open(std::string filename) {
 
 
 // Adapted from http://forum.devmaster.net/t/advanced-rasterization/6145
-projection stl::to_projection() {
+projection* stl::to_projection() {
 
 	// Variables
 	int x1;
@@ -109,7 +109,7 @@ projection stl::to_projection() {
 
 
 	// Make new projection
-	projection rtn(global_maxx - global_minx, global_maxy - global_miny);
+	projection* rtn = new projection(global_maxx - global_minx, global_maxy - global_miny);
 
 	// Loop through all the triangles
 	for (uint32_t i = 0; i < m_numTriangles; i++) {
@@ -134,7 +134,7 @@ projection stl::to_projection() {
 				if ((x1 - x2) * (y - y1) - (y1 - y2) * (x - x1) >= 0 &&
 					(x2 - x3) * (y - y2) - (y2 - y3) * (x - x2) >= 0 &&
 					(x3 - x1) * (y - y3) - (y3 - y1) * (x - x3) >= 0) {
-					rtn.set_pixel(x, y);
+					rtn->set_pixel(x, y);
 				}
 
 			}

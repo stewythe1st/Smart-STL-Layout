@@ -6,93 +6,61 @@
 
 
 projection::projection() {
-	m_xsize	= 0;
-	m_ysize	= 0;
-	m_grid	= nullptr;
-	m_color	= palette_colormap[rand() % e_black];
+	m_color = palette_colormap[rand() % e_black];
+}
+
+
+projection::projection(int xsize, int ysize) {
+	layout l;
+	l.m_xsize = xsize;
+	l.m_ysize = ysize;
+	l.m_grid = new bool*[xsize];
+	for (int x = 0; x < xsize; x++) {
+		l.m_grid[x] = new bool[ysize];
+		for (int y = 0; y < ysize; y++) {
+			l.m_grid[x][y] = false;
+		}
+	}
+	m_rotations.push_back(l);
+	m_color = palette_colormap[rand() % e_black];
 }
 
 
 projection::~projection() {
-	// Delete old grids
-	for (int x = 0; x < m_xsize; x++) {
-		delete[] m_grid[x];
-	}
-	delete[] m_grid;
-	return;
-}
-
-
-projection::projection(int xnew, int ynew) {
-
-	// Assign new data
-	m_xsize = xnew;
-	m_ysize = ynew;
-	m_color = palette_colormap[rand() % e_black];
-
-	m_grid = new bool*[m_xsize];	
-	for (int x = 0; x < m_xsize; x++) {
-		m_grid[x] = new bool[m_ysize];		
-		for (int y = 0; y < m_ysize; y++) {
-			m_grid[x][y] = false;
+	for (std::vector<layout>::iterator it = m_rotations.begin(); it != m_rotations.end(); it++) {
+		for (int x = 0; x < (*it).m_xsize; x++) {
+			delete[] (*it).m_grid[x];
 		}
+		delete[] (*it).m_grid;
 	}
+	m_rotations.clear();
 	return;
 }
-
-
-projection::projection(const projection& p) {
-	// Assign new data
-	m_xsize = p.m_xsize;
-	m_ysize = p.m_ysize;
-	m_color = p.m_color;
-
-	// Allocate new grids
-	m_grid = new bool*[m_xsize];
-	for (int x = 0; x < m_xsize; x++) {
-		m_grid[x] = new bool[m_ysize];
-		for (int y = 0; y < m_ysize; y++) {
-			m_grid[x][y] = p.m_grid[x][y];
-		}
-	}
-	return;
-}
-
 
 projection& projection::operator=(const projection& rhs) {
-
-	// Delete old grids
-	for (int x = 0; x < m_xsize; x++) {
-		delete[] m_grid[x];
-	}
-	delete[] m_grid;
-
-	// Assign new data
-	m_xsize = rhs.m_xsize;
-	m_ysize = rhs.m_ysize;
 	m_color = rhs.m_color;
-
-	// Allocate new grids
-	m_grid = new bool*[m_xsize];
-	for (int x = 0; x < m_xsize; x++) {
-		m_grid[x] = new bool[m_ysize];
-		for (int y = 0; y < m_ysize; y++) {
-			m_grid[x][y] = rhs.m_grid[x][y];
+	for (std::vector<layout>::const_iterator it = rhs.m_rotations.begin(); it != rhs.m_rotations.end(); it++) {
+		layout l;
+		l.m_xsize = (*it).m_xsize;
+		l.m_ysize = (*it).m_ysize;
+		l.m_grid = new bool*[l.m_xsize];
+		for (int x = 0; x < l.m_xsize; x++) {
+			for (int y = 0; y < l.m_ysize; y++) {
+				l.m_grid = (*it).m_grid;
+			}
 		}
+		m_rotations.push_back(l);
 	}
 	return *this;
 }
 
 
-void projection::draw_bounding_box() {
-	for (int i = 0; i < m_xsize; i++)
-		set_pixel(i, 0);
-	for (int i = 0; i < m_ysize; i++)
-		set_pixel(0, i);
-	for (int i = 0; i < m_xsize; i++)
-		set_pixel(i, m_ysize - 1);
-	for (int i = 0; i < m_ysize; i++)
-		set_pixel(m_xsize - 1, i);
+void projection::calc_rotations() {
+	layout l;
+	for (float rot = 1.0; rot < 360.0; rot+=1.0) {
+		l.m_grid = rotate(rot, l.m_xsize, l.m_ysize);
+		m_rotations.push_back(l);
+	}
 	return;
 }
 
@@ -100,10 +68,11 @@ void projection::draw_bounding_box() {
 bool** projection::rotate(float rot, int& xsize_out, int& ysize_out) {
 
 	// Variables
+	layout base = m_rotations.front();
 	int size_rotated;
 	int origin_rotated;
-	float xorigin = (float)m_xsize / 2.0f;
-	float yorigin = (float)m_ysize / 2.0f;
+	float xorigin = (float)base.m_xsize / 2.0f;
+	float yorigin = (float)base.m_ysize / 2.0f;
 	double intpart;
 	float xnew;
 	float ynew;
@@ -115,7 +84,7 @@ bool** projection::rotate(float rot, int& xsize_out, int& ysize_out) {
 	bool** grid_rotated_minimized;
 
 	// Calculate rotated grid size
-	size_rotated = 2 * MAX2(m_xsize, m_ysize);
+	size_rotated = 2 * MAX2(base.m_xsize, base.m_ysize);
 	origin_rotated = size_rotated / 2;
 	rot = fmod(rot, 360.0f);
 
@@ -129,9 +98,9 @@ bool** projection::rotate(float rot, int& xsize_out, int& ysize_out) {
 	}
 	
 	// Walk across base grid, looking for set pixels
-	for (int x = 0; x < m_xsize; x++) {
-		for (int y = 0; y < m_ysize; y++) {
-			if (m_grid[x][y]) {
+	for (int x = 0; x < base.m_xsize; x++) {
+		for (int y = 0; y < base.m_ysize; y++) {
+			if (base.m_grid[x][y]) {
 
 				// Translate each pixel to be centered around the origin for the rotation
 				// Perform matrix operation to rotate pixel by 'rot' degrees

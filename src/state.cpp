@@ -2,7 +2,7 @@
 #include "state.h"
 
 
-state::state(std::vector<projection>* p, int x, int y) {
+state::state(std::vector<projection*>* p, int x, int y) {
 	m_states = p;
 	m_xsize = x;
 	m_ysize = y;
@@ -40,7 +40,7 @@ void state::print(std::string filename) {
 	bitmap_image bmp(m_xsize, m_ysize);
 	bmp.clear(0xFF);
 	for (size_t i = 0; i < m_states->size(); i++) {
-		(*m_states)[i].print_on_bmp(bmp, m_x[i], m_y[i], (float)m_rot[i]);
+		(*m_states)[i]->print_on_bmp(bmp, m_x[i], m_y[i], (float)m_rot[i]);
 	}
 	bmp.save_image(filename);
 	return;
@@ -50,11 +50,8 @@ void state::print(std::string filename) {
 void state::calc_fitness() {
 
 	// Variables
-	projection* p;
+	layout l;
 	bool** grid;
-	bool** proj_grid;
-	int xsize, ysize;
-	bool valid;
 	
 	m_fitness = 0;
 
@@ -69,15 +66,12 @@ void state::calc_fitness() {
 
 	// Mark each projection on the grid
 	for (size_t i = 0; i < m_states->size(); i++) {
-		p = &(*m_states)[i];
+		l = (*m_states)[i]->get_layout(m_rot[i]);
 
-		proj_grid = p->rotate((float)m_rot[i], xsize, ysize);
+		for (int x = 0; x < l.m_xsize; x++) {
+			for (int y = 0; y < l.m_ysize; y++) {
 
-		for (int x = 0; x < xsize; x++) {
-			for (int y = 0; y < ysize; y++) {
-
-				if (proj_grid[x][y]) {
-					valid = true;
+				if (l.m_grid[x][y]) {
 
 					// If out of bounds
 					if (x + m_x[i] >= m_xsize || y + m_y[i] >= m_ysize ) {
@@ -96,11 +90,6 @@ void state::calc_fitness() {
 				}
 			}
 		}
-		// Reset grid
-		for (int x = 0; x < xsize; x++) {
-			delete[] proj_grid[x];
-		}
-		delete[] proj_grid;
 	}
 
 	// Clean up

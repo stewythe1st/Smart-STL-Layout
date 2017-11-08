@@ -13,7 +13,7 @@
 
 class state {
 private:
-	std::vector<projection>*	m_states;
+	std::vector<projection*>*	m_states;
 	std::vector<int>			m_x;
 	std::vector<int>			m_y;
 	std::vector<int>			m_rot;
@@ -27,7 +27,7 @@ public:
 
 	// Constructors & Destructors
 	state() {};
-	state(std::vector<projection>* p, int x, int y);
+	state(std::vector<projection*>* p, int x, int y);
 	~state() {};
 	state& operator=(const state& rhs);
 

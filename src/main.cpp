@@ -13,16 +13,18 @@ int main(int argc, char *argv[]) {
 
 	// Variables
 	stl batarang_stl;
-	projection batarang_proj;
+	projection* batarang_proj;
 	config cfg;
 	pool population;
 	pool offspring;
 	state* parent1;
 	state* parent2;
 	state* best;
-	std::vector<projection> projs;
+	std::vector<projection*> projs;
 	int eval;
 	std::ofstream log;
+	std::chrono::high_resolution_clock::time_point start;
+	long long int time_diff;
 
 	// Get configuration
 	if (argc > 1) {
@@ -35,7 +37,7 @@ int main(int argc, char *argv[]) {
 		std::cout << "Error: Unable to write to log file" << std::endl;
 		exit(1);
 	}
-	log << "Run,Generation,Evaluations,Average Fitness,Best Fitness" << std::endl;
+	log << "Run,Generation,Evaluations,Average Fitness,Best Fitness,Time" << std::endl;
 
 	// Seed random number generator
 	if (cfg.seedType == SEED_TIME_BASED) {
@@ -47,7 +49,8 @@ int main(int argc, char *argv[]) {
 	// Construct projection
 	batarang_stl.open("./stl/batarang.stl");
 	batarang_proj = batarang_stl.to_projection();
-
+	batarang_proj->calc_rotations();
+	
 	// Construct projection reference array
 	projs.push_back(batarang_proj);
 	projs.push_back(batarang_proj);
@@ -59,9 +62,7 @@ int main(int argc, char *argv[]) {
 	projs.push_back(batarang_proj);
 
 	state initial(&projs, 500, 500);
-	state global_best(&projs, 500, 500);
-
-
+	
 	// Runs
 	for (int run = 0; run < cfg.runs; run++) {
 		std::cout << std::endl << "Run " << run + 1 << std::endl;
@@ -78,6 +79,7 @@ int main(int argc, char *argv[]) {
 
 		// Evals
 		for (int generation = 1; eval < cfg.evals; generation++) {
+			start = std::chrono::high_resolution_clock::now();
 
 			// Generate Offspring
 			for (int i = 0; i < cfg.lambda; i++) {
@@ -105,11 +107,14 @@ int main(int argc, char *argv[]) {
 
 			// Keep track of local best fitness
 			best = population.get_best();
-			std::cout << generation << "\t" << eval << "\t" << FORMAT_FLOAT(0) << population.get_average() << "\t" << best->get_fitness() << std::endl;
-			log << run << "," << generation << "," << eval << "," << FORMAT_FLOAT(0) << population.get_average() << "," << best->get_fitness() << std::endl;
 			if (best->get_fitness() < local_best.get_fitness()) {
 				local_best = *best;
 			}
+
+			// Print info for this gen
+			time_diff = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start).count();
+			std::cout << generation << "\t" << eval << "\t" << FORMAT_FLOAT(0) << population.get_average() << "\t" << best->get_fitness() << "\t" << time_diff << std::endl;
+			log << run << "," << generation << "," << eval << "," << FORMAT_FLOAT(0) << population.get_average() << "," << best->get_fitness() << "\t" << time_diff << std::endl;
 
 			// Termination test
 			if (local_best.get_fitness() == 0) {
@@ -118,10 +123,11 @@ int main(int argc, char *argv[]) {
 		}
 		
 		// Print output
-		global_best.print("./img/" + cfg.name + "_run_" + std::to_string(run) + ".bmp");
+		local_best.print("./img/" + cfg.name + "_run_" + std::to_string(run) + ".bmp");
 	}
 	
 	// Clean up
+	delete batarang_proj;
 	log.close();
 	
 	return 0;
