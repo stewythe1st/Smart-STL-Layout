@@ -75,7 +75,7 @@ void stl::open(std::string filename) {
 
 
 // Adapted from http://forum.devmaster.net/t/advanced-rasterization/6145
-projection* stl::to_projection() {
+projection* stl::to_projection(float scale) {
 
 	// Variables
 	int x1;
@@ -95,12 +95,12 @@ projection* stl::to_projection() {
 
 	// Find global min/max
 	for (uint32_t i = 0; i < m_numTriangles; i++) {
-		x1 = (int)m_triangles[i].vertex1[0];
-		x2 = (int)m_triangles[i].vertex2[0];
-		x3 = (int)m_triangles[i].vertex3[0];
-		y1 = (int)m_triangles[i].vertex1[1];
-		y2 = (int)m_triangles[i].vertex2[1];
-		y3 = (int)m_triangles[i].vertex3[1];
+		x1 = (int)(m_triangles[i].vertex1[0] * scale);
+		x2 = (int)(m_triangles[i].vertex2[0] * scale);
+		x3 = (int)(m_triangles[i].vertex3[0] * scale);
+		y1 = (int)(m_triangles[i].vertex1[1] * scale);
+		y2 = (int)(m_triangles[i].vertex2[1] * scale);
+		y3 = (int)(m_triangles[i].vertex3[1] * scale);
 		global_maxx = MAX4(global_maxx, x1, x2, x3);
 		global_minx = MIN4(global_minx, x1, x2, x3);
 		global_maxy = MAX4(global_maxy, y1, y2, y3);
@@ -115,12 +115,12 @@ projection* stl::to_projection() {
 	for (uint32_t i = 0; i < m_numTriangles; i++) {
 
 		// Get coords
-		x1 = (int)m_triangles[i].vertex1[0] - global_minx;
-		x2 = (int)m_triangles[i].vertex2[0] - global_minx;
-		x3 = (int)m_triangles[i].vertex3[0] - global_minx;
-		y1 = (int)m_triangles[i].vertex1[1] - global_miny;
-		y2 = (int)m_triangles[i].vertex2[1] - global_miny;
-		y3 = (int)m_triangles[i].vertex3[1] - global_miny;
+		x1 = (int)(m_triangles[i].vertex1[0] * scale) - global_minx;
+		x2 = (int)(m_triangles[i].vertex2[0] * scale) - global_minx;
+		x3 = (int)(m_triangles[i].vertex3[0] * scale) - global_minx;
+		y1 = (int)(m_triangles[i].vertex1[1] * scale) - global_miny;
+		y2 = (int)(m_triangles[i].vertex2[1] * scale) - global_miny;
+		y3 = (int)(m_triangles[i].vertex3[1] * scale) - global_miny;
 
 		// Get bounding rectangle
 		minx = MIN3(x1, x2, x3);

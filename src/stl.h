@@ -31,7 +31,7 @@ public:
 
 	// Member Functions
 	void open(std::string filename);
-	projection* to_projection();
+	projection* to_projection(float scale);
 };
 
 

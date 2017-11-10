@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 
 #define COMMENT_CHAR		('#')
 #define DEFAULT_FILE		("default.cfg")
@@ -16,7 +17,9 @@ enum seedType {
 enum dataType {
 	INT,
 	FLOAT,
-	STRING
+	FLOAT_VECTOR,
+	STRING,
+	STRING_VECTOR
 };
 
 struct cfg_value {
@@ -26,22 +29,26 @@ struct cfg_value {
 
 struct config {
 
-	std::string	srcfile = DEFAULT_FILE;
-	std::string name;
-	int			seed;
-	int			seedType;
-	int			runs;
-	int			evals;
-	int			mu;
-	int			lambda;
-	int			parentSelTournSize;
-	int			survivorSelTournSize;
-	int			crossovers;
-	float		mutationRate;
-	int			creepDist;
+	std::string					srcfile = DEFAULT_FILE;
+	std::vector<std::string>	stls;
+	std::vector<float>			stl_scales;
+	std::string					name;
+	int							seed;
+	int							seedType;
+	int							runs;
+	int							evals;
+	int							mu;
+	int							lambda;
+	int							parentSelTournSize;
+	int							survivorSelTournSize;
+	int							crossovers;
+	float						mutationRate;
+	int							creepDist;
 
 	std::map<std::string, cfg_value> defs = {
 		{ "name", cfg_value{ &name, STRING } },
+		{ "stl", cfg_value{ &stls, STRING_VECTOR } },
+		{ "scale", cfg_value{ &stl_scales, FLOAT_VECTOR } },
 		{ "seed", cfg_value{ &seed, INT } },
 		{ "seedType", cfg_value{ &seedType, INT } },
 		{ "runs", cfg_value{ &runs, INT } },

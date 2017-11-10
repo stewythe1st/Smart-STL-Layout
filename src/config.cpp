@@ -21,6 +21,16 @@ bool config::read(std::string filename) {
 		return false;
 	}
 
+	// Empty any vectors
+	for (std::map<std::string, cfg_value>::iterator it = defs.begin(); it != defs.end(); it++) {
+		if ((*it).second.type == STRING_VECTOR) {
+			(*(std::vector<std::string>*)(*it).second.address).clear();
+		}
+		else if ((*it).second.type == FLOAT_VECTOR) {
+			(*(std::vector<float>*)(*it).second.address).clear();
+		}
+	}
+
 	// Read in line-by-line
 	while (getline(in, line)) {
 
@@ -38,6 +48,9 @@ bool config::read(std::string filename) {
 			lhs = line.substr(0, split);
 			rhs = line.substr(split + 1);
 		}
+		else {
+			continue;
+		}
 		
 		// Parse string to value
 		value = defs.find(lhs);
@@ -46,8 +59,12 @@ bool config::read(std::string filename) {
 				*(int*)(*value).second.address = atoi(rhs.c_str());
 			else if ((*value).second.type == FLOAT)
 				*(float*)(*value).second.address = (float)atof(rhs.c_str());
+			else if ((*value).second.type == FLOAT_VECTOR)
+				(*(std::vector<float>*)(*value).second.address).push_back((float)atof(rhs.c_str()));
 			else if ((*value).second.type == STRING)
 				*(std::string*)(*value).second.address = rhs;
+			else if ((*value).second.type == STRING_VECTOR)
+				(*(std::vector<std::string>*)(*value).second.address).push_back(rhs);
 		}		
 	}
 

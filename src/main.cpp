@@ -12,8 +12,6 @@
 int main(int argc, char *argv[]) {
 
 	// Variables
-	stl batarang_stl;
-	projection* batarang_proj;
 	config cfg;
 	pool population;
 	pool offspring;
@@ -46,20 +44,16 @@ int main(int argc, char *argv[]) {
 	}
 	srand(cfg.seed);
 
-	// Construct projection
-	batarang_stl.open("./stl/batarang.stl");
-	batarang_proj = batarang_stl.to_projection();
-	batarang_proj->calc_rotations();
-	
-	// Construct projection reference array
-	projs.push_back(batarang_proj);
-	projs.push_back(batarang_proj);
-	projs.push_back(batarang_proj);
-	projs.push_back(batarang_proj);
-	projs.push_back(batarang_proj);
-	projs.push_back(batarang_proj);
-	projs.push_back(batarang_proj);
-	projs.push_back(batarang_proj);
+	// Construct projections
+	for (size_t i = 0; i < cfg.stls.size(); i++) {
+		std::cout << "Parsing STL file for " << cfg.stls[i] << "... ";
+		stl* temp_stl = new stl(cfg.stls[i]);
+		projection* temp_proj = temp_stl->to_projection(cfg.stl_scales[i]);
+		temp_proj->calc_rotations();
+		projs.push_back(temp_proj);
+		delete temp_stl;
+		std::cout << "Done!" << std::endl;
+	}
 
 	state initial(&projs, 500, 500);
 	
@@ -127,7 +121,9 @@ int main(int argc, char *argv[]) {
 	}
 	
 	// Clean up
-	delete batarang_proj;
+	for (std::vector<projection*>::iterator it = projs.begin(); it != projs.end(); it++) {
+		delete *it;
+	}
 	log.close();
 	
 	return 0;
