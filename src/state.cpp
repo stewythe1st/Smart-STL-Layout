@@ -46,6 +46,10 @@ void state::print(std::string filename) {
 	return;
 }
 
+std::string state::get_position_string(int i) {
+	return "(" + std::to_string(m_x[i]) + "," + std::to_string(m_y[i]) + "), " + std::to_string(m_rot[i]) + "*";
+}
+
 
 void state::calc_fitness() {
 

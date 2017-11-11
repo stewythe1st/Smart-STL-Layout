@@ -34,6 +34,7 @@ public:
 	// Member Functions
 	void randomize();
 	void print(std::string filename);
+	std::string get_position_string(int i);
 	void calc_fitness();
 	void nPointCrossover(state* parent1, state* parent2, int n);
 	void randResetMutate();

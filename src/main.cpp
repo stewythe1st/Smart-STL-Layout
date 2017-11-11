@@ -35,7 +35,6 @@ int main(int argc, char *argv[]) {
 		std::cout << "Error: Unable to write to log file" << std::endl;
 		exit(1);
 	}
-	log << "Run,Generation,Evaluations,Average Fitness,Best Fitness,Time" << std::endl;
 
 	// Seed random number generator
 	if (cfg.seedType == SEED_TIME_BASED) {
@@ -56,6 +55,9 @@ int main(int argc, char *argv[]) {
 	}
 
 	state initial(&projs, 500, 500);
+
+	log << "Run,Generation,Evaluations,Average Fitness,Best Fitness,Time" << std::endl;
+	std::cout << std::endl << "<Gen>\t<Eval>\t<Avg>\t<Best>\t<Time(ms)>" << std::endl;
 	
 	// Runs
 	for (int run = 0; run < cfg.runs; run++) {
@@ -118,6 +120,10 @@ int main(int argc, char *argv[]) {
 		
 		// Print output
 		local_best.print("./img/" + cfg.name + "_run_" + std::to_string(run) + ".bmp");
+		std::cout << "Final:" << std::endl;
+		for (size_t i = 0; i < cfg.stls.size(); i++) {
+			std::cout << "\t" << cfg.stls[i] << std::string(32 - cfg.stls[i].size(), ' ') << local_best.get_position_string(i) << std::endl;
+		}
 	}
 	
 	// Clean up
