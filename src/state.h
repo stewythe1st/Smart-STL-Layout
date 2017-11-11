@@ -9,6 +9,7 @@
 
 #define OVERLAP_PENALTY			5
 #define OUT_OF_BOUNDS_PENALTY	3
+#define COMPRESSION_BONUS		2
 
 
 class state {
@@ -21,7 +22,7 @@ private:
 	int							m_xsize = 500;
 	int							m_ysize = 500;
 
-	int							m_fitness = INT_MAX;
+	int							m_fitness = INT_MIN;
 	
 public:
 

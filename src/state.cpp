@@ -56,7 +56,7 @@ void state::calc_fitness() {
 	// Variables
 	layout l;
 	bool** grid;
-	
+
 	m_fitness = 0;
 
 	// Allocate a grid
@@ -79,12 +79,12 @@ void state::calc_fitness() {
 
 					// If out of bounds
 					if (x + m_x[i] >= m_xsize || y + m_y[i] >= m_ysize ) {
-						m_fitness += OUT_OF_BOUNDS_PENALTY;
+						m_fitness -= OUT_OF_BOUNDS_PENALTY;
 					}
 
 					// If overlapping
 					else if (grid[x + m_x[i]][y + m_y[i]]) {
-						m_fitness += OVERLAP_PENALTY;
+						m_fitness -= OVERLAP_PENALTY;
 					}
 
 					// Mark grid
@@ -93,6 +93,17 @@ void state::calc_fitness() {
 					}
 				}
 			}
+		}
+	}
+	bool end = false;
+	for (int x = m_xsize-1; x >= 0 && !end; x--) {
+		for (int y = 0; y < m_ysize && !end; y++) {
+			if (grid[x][y]) {
+				end = true;
+			}
+		}
+		if(end){
+			m_fitness += ((m_xsize - x) * COMPRESSION_BONUS);
 		}
 	}
 

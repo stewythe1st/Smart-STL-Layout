@@ -3,7 +3,7 @@
 
 
 state* pool::chooseParentKTourn(int k) {
-	return &m_states[kTournament(k, true, true)];
+	return &m_states[kTournament(k, false, true)];
 }
 
 
@@ -24,7 +24,7 @@ void pool::reduceByKTourn(size_t size, int k) {
 			k = (int)m_states.size();
 
 		// Randomly pick k members of the pool, keeping track of the one with the worst fitness 
-		idx = kTournament(k, true, false);
+		idx = kTournament(k, false, false);
 		m_states.erase(m_states.begin() + idx);
 	}
 
@@ -72,7 +72,7 @@ int pool::kTournament(int k, bool highest, bool replacement) {
 state* pool::get_best() {
 	state* best = &m_states.front();
 	for (std::vector<state>::iterator it = m_states.begin(); it != m_states.end(); it++) {
-		if ((*it).get_fitness() < best->get_fitness()) {
+		if ((*it).get_fitness() > best->get_fitness()) {
 			best = &(*it);
 		}
 	}

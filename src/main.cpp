@@ -84,8 +84,8 @@ int main(int argc, char *argv[]) {
 				parent2 = population.chooseParentKTourn(cfg.parentSelTournSize);
 				s.nPointCrossover(parent1, parent2, cfg.crossovers);
 				if (GET_RANDOM_DECIMAL < cfg.mutationRate) {
-					//s.randResetMutate();
-					s.creepMutate(cfg.creepDist);
+					s.randResetMutate();
+					//s.creepMutate(cfg.creepDist);
 				}
 				s.calc_fitness();
 				offspring.add(s);
@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
 
 			// Keep track of local best fitness
 			best = population.get_best();
-			if (best->get_fitness() < local_best.get_fitness()) {
+			if (best->get_fitness() > local_best.get_fitness()) {
 				local_best = *best;
 			}
 
@@ -113,7 +113,8 @@ int main(int argc, char *argv[]) {
 			log << run << "," << generation << "," << eval << "," << FORMAT_FLOAT(0) << population.get_average() << "," << best->get_fitness() << "\t" << time_diff << std::endl;
 
 			// Termination test
-			if (local_best.get_fitness() == 0) {
+			if (generation >= 100) {
+			//if (local_best.get_fitness() == 0) {
 				break;
 			}
 		}
