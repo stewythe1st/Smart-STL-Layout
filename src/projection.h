@@ -31,7 +31,7 @@ public:
 	// Member Functions
 	void calc_rotations(int rot_restrict);
 	bool** rotate(float rot, int& xsize_out, int& ysize_out);
-	void print_on_bmp(bitmap_image& bmp, int x_offset, int y_offset, float rot);
+	void print_on_bmp(bitmap_image& bmp, int x_offset, int y_offset, int rot);
 
 	// Accessors & mutators
 	inline void set_pixel(int x, int y) { m_rotations.front().m_grid[x][y] = true; };
