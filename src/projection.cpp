@@ -55,10 +55,10 @@ projection& projection::operator=(const projection& rhs) {
 }
 
 
-void projection::calc_rotations() {
+void projection::calc_rotations(int rot_restrict) {
 	layout l;
-	for (float rot = 1.0; rot < 360.0; rot+=1.0) {
-		l.m_grid = rotate(rot, l.m_xsize, l.m_ysize);
+	for (int rot = rot_restrict; rot < 360; rot+=rot_restrict) {
+		l.m_grid = rotate((float)rot, l.m_xsize, l.m_ysize);
 		m_rotations.push_back(l);
 	}
 	return;

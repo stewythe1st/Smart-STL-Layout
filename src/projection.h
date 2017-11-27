@@ -29,7 +29,7 @@ public:
 	projection& operator=(const projection& rhs);
 
 	// Member Functions
-	void calc_rotations();
+	void calc_rotations(int rot_restrict);
 	bool** rotate(float rot, int& xsize_out, int& ysize_out);
 	void print_on_bmp(bitmap_image& bmp, int x_offset, int y_offset, float rot);
 
@@ -40,6 +40,7 @@ public:
 	inline int get_xsize() { return m_rotations.front().m_xsize; };
 	inline int get_ysize() { return m_rotations.front().m_ysize; };
 	inline layout get_layout(int rot) { return m_rotations[rot]; };
+	inline int get_num_rotations() { return m_rotations.size(); };
 };
 
 

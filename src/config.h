@@ -44,6 +44,7 @@ struct config {
 	int							crossovers;
 	float						mutationRate;
 	int							creepDist;
+	int							rotationalRestriction;
 
 	std::map<std::string, cfg_value> defs = {
 		{ "name", cfg_value{ &name, STRING } },
@@ -59,7 +60,8 @@ struct config {
 		{ "survivorSelTournSize", cfg_value{ &survivorSelTournSize, INT } },
 		{ "crossovers", cfg_value{ &crossovers, INT } },
 		{ "mutationRate", cfg_value{ &mutationRate, FLOAT } },
-		{ "creepDist", cfg_value{ &creepDist, INT } }
+		{ "creepDist", cfg_value{ &creepDist, INT } },
+		{ "rotationalRestriction", cfg_value{ &rotationalRestriction, INT } }
 	};
 
 	// Constructors & Destructors

@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
 		std::cout << "Parsing STL file for " << cfg.stls[i] << "... ";
 		stl* temp_stl = new stl(cfg.stls[i]);
 		projection* temp_proj = temp_stl->to_projection(cfg.stl_scales[i]);
-		temp_proj->calc_rotations();
+		temp_proj->calc_rotations(cfg.rotationalRestriction);
 		projs.push_back(temp_proj);
 		delete temp_stl;
 		std::cout << "Done!" << std::endl;

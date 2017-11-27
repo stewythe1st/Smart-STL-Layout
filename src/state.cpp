@@ -30,7 +30,7 @@ void state::randomize() {
 	for (size_t i = 0; i < m_states->size(); i++) {
 		m_x[i] = rand() % m_xsize;
 		m_y[i] = rand() % m_ysize;
-		m_rot[i] = rand() % 360;
+		m_rot[i] = rand() % (*m_states)[i]->get_num_rotations();
 	}
 	return;
 }
@@ -40,14 +40,14 @@ void state::print(std::string filename) {
 	bitmap_image bmp(m_xsize, m_ysize);
 	bmp.clear(0xFF);
 	for (size_t i = 0; i < m_states->size(); i++) {
-		(*m_states)[i]->print_on_bmp(bmp, m_x[i], m_y[i], (float)m_rot[i]);
+		(*m_states)[i]->print_on_bmp(bmp, m_x[i], m_y[i], m_rot[i]);
 	}
 	bmp.save_image(filename);
 	return;
 }
 
 std::string state::get_position_string(int i) {
-	return "(" + std::to_string(m_x[i]) + "," + std::to_string(m_y[i]) + "), " + std::to_string(m_rot[i]) + "*";
+	return "(" + std::to_string(m_x[i]) + "," + std::to_string(m_y[i]) + "), " + std::to_string(m_rot[i] * 360 / (*m_states)[i]->get_num_rotations()) + "*";
 }
 
 
@@ -172,7 +172,7 @@ void state::creepMutate(int creepDist) {
 		m_y[idx] += creepDist;
 		break;
 	case 2:
-		m_rot[idx] = (m_rot[idx] + creepDist) % 360;
+		m_rot[idx] = (m_rot[idx] + std::min(creepDist, (*m_states)[idx]->get_num_rotations())) % 360;
 		break;
 	}
 
@@ -191,7 +191,7 @@ void state::randResetMutate() {
 	// Choose new random coordinates
 	m_x[idx] = rand() % m_xsize;
 	m_y[idx] = rand() % m_ysize;
-	m_rot[idx] = rand() % 360;
+	m_rot[idx] = rand() % (*m_states)[idx]->get_num_rotations();
 
 	return;
 }
