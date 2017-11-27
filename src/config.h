@@ -14,6 +14,12 @@ enum seedType {
 	SEED_TIME_BASED
 };
 
+enum termTestType {
+	TERMTEST_EVALS,
+	TERMTEST_GENS,
+	TERMTEST_BESTUNCHANGED
+};
+
 enum dataType {
 	INT,
 	FLOAT,
@@ -41,6 +47,8 @@ struct config {
 	int							lambda;
 	int							parentSelTournSize;
 	int							survivorSelTournSize;
+	int							termTest;
+	int							termTarget;
 	int							crossovers;
 	float						mutationRate;
 	int							creepDist;
@@ -58,6 +66,8 @@ struct config {
 		{ "lambda", cfg_value{ &lambda, INT } },
 		{ "parentSelTournSize", cfg_value{ &parentSelTournSize, INT } },
 		{ "survivorSelTournSize", cfg_value{ &survivorSelTournSize, INT } },
+		{ "termTest", cfg_value{ &termTest, INT } },
+		{ "termTarget", cfg_value{ &termTarget, INT } },
 		{ "crossovers", cfg_value{ &crossovers, INT } },
 		{ "mutationRate", cfg_value{ &mutationRate, FLOAT } },
 		{ "creepDist", cfg_value{ &creepDist, INT } },

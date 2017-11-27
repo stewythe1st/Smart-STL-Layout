@@ -23,6 +23,9 @@ int main(int argc, char *argv[]) {
 	std::ofstream log;
 	std::chrono::high_resolution_clock::time_point start;
 	long long int time_diff;
+	bool terminate;
+	int last_best = 0;
+	int unchanged = 0;
 
 	// Get configuration
 	if (argc > 1) {
@@ -74,7 +77,8 @@ int main(int argc, char *argv[]) {
 		}		
 
 		// Evals
-		for (int generation = 1; eval < cfg.evals; generation++) {
+		terminate = false;
+		for (int generation = 1; eval < cfg.evals && !terminate; generation++) {
 			start = std::chrono::high_resolution_clock::now();
 
 			// Generate Offspring
@@ -113,18 +117,29 @@ int main(int argc, char *argv[]) {
 			log << run << "," << generation << "," << eval << "," << FORMAT_FLOAT(0) << population.get_average() << "," << best->get_fitness() << "\t" << time_diff << std::endl;
 
 			// Termination test
-			if (generation >= 100) {
-			//if (local_best.get_fitness() == 0) {
-				break;
+			switch(cfg.termTest){
+				case TERMTEST_EVALS:
+					terminate = (eval >= cfg.termTarget);
+					break;
+				case TERMTEST_GENS:
+					terminate = (generation >= cfg.termTarget);
+					break;
+				case TERMTEST_BESTUNCHANGED:
+					unchanged = (last_best == best->get_fitness() ? unchanged + 1 : 0 );
+					terminate = (unchanged >= cfg.termTarget);
+					last_best = best->get_fitness();
+					break;
 			}
 		}
 		
 		// Print output
-		local_best.print("./img/" + cfg.name + "_run_" + std::to_string(run) + ".bmp");
-		std::cout << "Final:" << std::endl;
+		std::cout << std::endl << "Final: " << std::endl;
 		for (size_t i = 0; i < cfg.stls.size(); i++) {
 			std::cout << "\t" << cfg.stls[i] << std::string(32 - cfg.stls[i].size(), ' ') << local_best.get_position_string(i) << std::endl;
 		}
+		std::string output_filename = "./img/" + cfg.name + "_run_" + std::to_string(run) + ".bmp";
+		std::cout << std::endl << "Printing output to: " << output_filename << " ..." << std::endl;
+		local_best.print(output_filename);
 	}
 	
 	// Clean up
