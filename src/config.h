@@ -39,6 +39,8 @@ struct config {
 	std::vector<std::string>	stls;
 	std::vector<float>			stl_scales;
 	std::string					name;
+	int							width;
+	int							height;
 	int							seed;
 	int							seedType;
 	int							runs;
@@ -58,6 +60,8 @@ struct config {
 		{ "name", cfg_value{ &name, STRING } },
 		{ "stl", cfg_value{ &stls, STRING_VECTOR } },
 		{ "scale", cfg_value{ &stl_scales, FLOAT_VECTOR } },
+		{ "width", cfg_value{ &width, INT } },
+		{ "height", cfg_value{ &height, INT } },
 		{ "seed", cfg_value{ &seed, INT } },
 		{ "seedType", cfg_value{ &seedType, INT } },
 		{ "runs", cfg_value{ &runs, INT } },

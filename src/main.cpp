@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
 		std::cout << "Done!" << std::endl;
 	}
 
-	state initial(&projs, 500, 500);
+	state initial(&projs, cfg.width, cfg.height);
 
 	log << "Run,Generation,Evaluations,Average Fitness,Best Fitness,Time" << std::endl;
 	std::cout << std::endl << "<Gen>\t<Eval>\t<Avg>\t<Best>\t<Time(ms)>" << std::endl;
@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
 	for (int run = 0; run < cfg.runs; run++) {
 		std::cout << std::endl << "Run " << run + 1 << std::endl;
 		eval = 0;
-		state local_best(&projs, 500, 500);
+		state local_best(&projs, cfg.width, cfg.height);
 
 		// Construct and randomize initial population
 		for (int i = 0; i < cfg.mu; i++) {
@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
 
 			// Generate Offspring
 			for (int i = 0; i < cfg.lambda; i++) {
-				state s(&projs, 500, 500);
+				state s(&projs, cfg.width, cfg.height);
 				parent1 = population.chooseParentKTourn(cfg.parentSelTournSize);
 				parent2 = population.chooseParentKTourn(cfg.parentSelTournSize);
 				s.nPointCrossover(parent1, parent2, cfg.crossovers);
@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
 			// Print info for this gen
 			time_diff = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start).count();
 			std::cout << generation << "\t" << eval << "\t" << FORMAT_FLOAT(0) << population.get_average() << "\t" << best->get_fitness() << "\t" << time_diff << std::endl;
-			log << run << "," << generation << "," << eval << "," << FORMAT_FLOAT(0) << population.get_average() << "," << best->get_fitness() << "\t" << time_diff << std::endl;
+			log << run << "," << generation << "," << eval << "," << FORMAT_FLOAT(0) << population.get_average() << "," << best->get_fitness() << "," << time_diff << std::endl;
 
 			// Termination test
 			switch(cfg.termTest){

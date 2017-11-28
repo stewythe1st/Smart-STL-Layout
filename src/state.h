@@ -19,8 +19,8 @@ private:
 	std::vector<int>			m_y;
 	std::vector<int>			m_rot;
 	
-	int							m_xsize = 500;
-	int							m_ysize = 500;
+	int							m_xsize;
+	int							m_ysize;
 
 	int							m_fitness = INT_MIN;
 	
