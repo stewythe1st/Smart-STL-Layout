@@ -40,7 +40,7 @@ public:
 	inline int get_xsize() { return m_rotations.front().m_xsize; };
 	inline int get_ysize() { return m_rotations.front().m_ysize; };
 	inline layout get_layout(int rot) { return m_rotations[rot]; };
-	inline int get_num_rotations() { return m_rotations.size(); };
+	inline int get_num_rotations() { return (int)m_rotations.size(); };
 };
 
 

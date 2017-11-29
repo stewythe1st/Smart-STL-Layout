@@ -1,3 +1,6 @@
+// STL file format documentation openly available at
+// https://en.wikipedia.org/wiki/STL_(file_format)
+
 
 #include "common.h"
 #include "stl.h"
@@ -22,15 +25,36 @@ stl::~stl() {
 void stl::open(std::string filename) {
 
 	// Variables
-	char			buf[4];
 	std::ifstream	in;
+	char			buf[7];
 
-	// Open filestream
 	in.open(filename, std::ios::binary);
 	if (!in.is_open()) {
 		std::cout << "Error: Unable to read file" << std::endl;
 		exit(1);
 	}
+
+	// Read first 6 chars
+	in.getline(buf, 7);
+	in.clear();
+	in.seekg(0);
+
+	if (!strcmp(buf, "solid ")) {
+		open_ascii(in);
+	}
+	else {
+		open_binary(in);
+	}
+
+	in.close();
+	return;
+}
+
+
+void stl::open_binary(std::ifstream& in) {
+
+	// Variables
+	char			buf[4];
 
 	// Read in header
 	in.read(m_header, sizeof(m_header) / sizeof(*m_header));
@@ -68,6 +92,66 @@ void stl::open(std::string filename) {
 		// Attribute Byte Count
 		in.read(buf, sizeof(m_triangles[i].attribByteCnt));
 		memcpy((void*)&m_triangles[i].attribByteCnt, buf, sizeof(m_triangles[i].attribByteCnt));
+	}
+
+	return;
+}
+
+void stl::open_ascii(std::ifstream& in) {
+
+	// Variables
+	char			buf[64];
+	long int		lines;
+
+	// Counts lines and allocate triangles
+	lines = (long int)std::count(std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>(), '\n') + 1;
+	in.clear();
+	in.seekg(0);
+	m_numTriangles = (lines - 3) / 7;
+	m_triangles = new triangle[m_numTriangles];
+
+	// Read in header
+	in.getline(buf, 64);
+	memcpy(m_header, buf + strlen("solid "), strlen(buf) + 1);
+
+	for (uint32_t i = 0; i<m_numTriangles; i++) {
+
+		// "facet normal ni nj nk"
+		in.getline(buf, 64);
+		for (int j = 0; j < 3; j++) {
+			memcpy(buf, buf + 15, strlen(buf) + 1);
+			m_triangles[i].normal[j] = (float)atof(buf);
+		}
+
+		// "outer loop" - discard
+		in.getline(buf, 64);
+
+		// "vertex v1x v1y v1z"
+		in.getline(buf, 64);
+		for (int j = 0; j < 3; j++) {
+			memcpy(buf, buf + 14, strlen(buf) + 1);
+			m_triangles[i].vertex1[j] = (float)atof(buf);
+		}
+
+		// "vertex v2x v2y v2z"
+		in.getline(buf, 64);
+		for (int j = 0; j < 3; j++) {
+			memcpy(buf, buf + 14, strlen(buf) + 1);
+			m_triangles[i].vertex2[j] = (float)atof(buf);
+		}
+
+		// "vertex v3x v3y v3z"
+		in.getline(buf, 64);
+		for (int j = 0; j < 3; j++) {
+			memcpy(buf, buf + 14, strlen(buf) + 1);
+			m_triangles[i].vertex3[j] = (float)atof(buf);
+		}
+
+		// "endloop" - discard
+		in.getline(buf, 64);
+
+		// "endfacet" - discard
+		in.getline(buf, 64);
 	}
 
 	return;

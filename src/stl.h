@@ -21,6 +21,10 @@ private:
 	char		m_header[80];
 	uint32_t	m_numTriangles;
 	triangle*	m_triangles;
+
+	// Private member functions
+	void open_binary(std::ifstream& in);
+	void open_ascii(std::ifstream& in);
 	
 public:
 

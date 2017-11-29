@@ -134,7 +134,7 @@ int main(int argc, char *argv[]) {
 		
 		// Print output
 		std::cout << std::endl << "Final: " << std::endl;
-		for (size_t i = 0; i < cfg.stls.size(); i++) {
+		for (int i = 0; i < (int)cfg.stls.size(); i++) {
 			std::cout << "\t" << cfg.stls[i] << std::string(32 - cfg.stls[i].size(), ' ') << local_best.get_position_string(i) << std::endl;
 		}
 		std::string output_filename = "./img/" + cfg.name + "_run_" + std::to_string(run) + ".bmp";
