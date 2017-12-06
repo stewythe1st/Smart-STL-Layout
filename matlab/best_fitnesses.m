@@ -17,12 +17,13 @@ for i=2:size(data)
         j = j + 1;
     end
 end
+best(j) = data(i-1,5);
 
 fig = figure(); 
 
 % Plot data
 hold on;
-plot(1:1:length(best),best,'-','color','blue');
+plot(0:1:length(best)-1,best,'-','color','blue');
 hold off;
 xlabel('Run');
 ylabel('Fitness');

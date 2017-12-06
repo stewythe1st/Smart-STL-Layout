@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
 	
 	// Runs
 	for (int run = 0; run < cfg.runs; run++) {
-		std::cout << std::endl << "Run " << run + 1 << std::endl;
+		std::cout << std::endl << "Run " << run << std::endl;
 		eval = 0;
 		state local_best(&projs, cfg.width, cfg.height);
 
