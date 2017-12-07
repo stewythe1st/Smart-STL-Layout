@@ -27,6 +27,7 @@ public:
 	inline void empty() { m_states.clear(); };
 	state* get_best();
 	float get_average();
+	void log(int run, std::ofstream& out);
 
 	// Accessors and Mutators
 	inline void add(state s) { m_states.push_back(s); };

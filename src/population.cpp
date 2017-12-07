@@ -86,3 +86,10 @@ float pool::get_average() {
 	}
 	return (float)total / (float)m_states.size();
 }
+
+void pool::log(int run, std::ofstream& out) {
+	for (std::vector<state>::iterator it = m_states.begin(); it != m_states.end(); it++) {
+		out << run << "," << (*it).get_fitness() << std::endl;
+	}
+	return;
+}

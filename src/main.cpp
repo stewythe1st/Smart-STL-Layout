@@ -21,6 +21,7 @@ int main(int argc, char *argv[]) {
 	std::vector<projection*> projs;
 	int eval;
 	std::ofstream log;
+	std::ofstream log2;
 	std::chrono::high_resolution_clock::time_point start;
 	long long int time_diff;
 	bool terminate;
@@ -34,7 +35,8 @@ int main(int argc, char *argv[]) {
 
 	// Open log file
 	log.open("./log/" + cfg.name + ".csv");
-	if (!log.is_open()) {
+	log2.open("./log/" + cfg.name + "_population.csv");
+	if (!log.is_open() || !log2.is_open()) {
 		std::cout << "Error: Unable to write to log file" << std::endl;
 		exit(1);
 	}
@@ -147,6 +149,8 @@ int main(int argc, char *argv[]) {
 		std::cout << std::endl << "Printing output to: " << output_filename << " ..." << std::endl;
 		local_best.print(output_filename);
 
+		population.log(run, log2);
+
 		population.empty();
 	}
 	
@@ -155,6 +159,7 @@ int main(int argc, char *argv[]) {
 		delete *it;
 	}
 	log.close();
+	log2.close();
 	
 	return 0;
 }
