@@ -88,8 +88,14 @@ int main(int argc, char *argv[]) {
 				parent2 = population.chooseParentKTourn(cfg.parentSelTournSize);
 				s.nPointCrossover(parent1, parent2, cfg.crossovers);
 				if (GET_RANDOM_DECIMAL < cfg.mutationRate) {
-					s.randResetMutate();
-					//s.creepMutate(cfg.creepDist);
+					switch (cfg.mutationType) {
+					case MUTATION_RANDRESET:
+						s.randResetMutate();
+						break;
+					case MUTATION_CREEP:
+						s.creepMutate(cfg.creepDist);
+						break;
+					}
 				}
 				s.calc_fitness();
 				offspring.add(s);
@@ -140,6 +146,8 @@ int main(int argc, char *argv[]) {
 		std::string output_filename = "./img/" + cfg.name + "_run_" + std::to_string(run) + ".bmp";
 		std::cout << std::endl << "Printing output to: " << output_filename << " ..." << std::endl;
 		local_best.print(output_filename);
+
+		population.empty();
 	}
 	
 	// Clean up

@@ -172,7 +172,7 @@ void state::creepMutate(int creepDist) {
 		m_y[idx] += creepDist;
 		break;
 	case 2:
-		m_rot[idx] = (m_rot[idx] + std::min(creepDist, (*m_states)[idx]->get_num_rotations())) % 360;
+		m_rot[idx] = (m_rot[idx] + creepDist) % (*m_states)[idx]->get_num_rotations();
 		break;
 	}
 

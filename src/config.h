@@ -14,6 +14,11 @@ enum seedType {
 	SEED_TIME_BASED
 };
 
+enum mutationType {
+	MUTATION_RANDRESET,
+	MUTATION_CREEP
+};
+
 enum termTestType {
 	TERMTEST_EVALS,
 	TERMTEST_GENS,
@@ -52,6 +57,7 @@ struct config {
 	int							termTest;
 	int							termTarget;
 	int							crossovers;
+	int							mutationType;
 	float						mutationRate;
 	int							creepDist;
 	int							rotationalRestriction;
@@ -73,6 +79,7 @@ struct config {
 		{ "termTest", cfg_value{ &termTest, INT } },
 		{ "termTarget", cfg_value{ &termTarget, INT } },
 		{ "crossovers", cfg_value{ &crossovers, INT } },
+		{ "mutationType", cfg_value{ &mutationType, INT } },
 		{ "mutationRate", cfg_value{ &mutationRate, FLOAT } },
 		{ "creepDist", cfg_value{ &creepDist, INT } },
 		{ "rotationalRestriction", cfg_value{ &rotationalRestriction, INT } }
