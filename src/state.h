@@ -7,8 +7,8 @@
 #include <climits>
 #include <string>
 
-#define OVERLAP_PENALTY			5
-#define OUT_OF_BOUNDS_PENALTY	3
+#define OVERLAP_PENALTY			1
+#define OUT_OF_BOUNDS_PENALTY	2
 #define COMPRESSION_BONUS		2
 
 
