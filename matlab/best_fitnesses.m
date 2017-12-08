@@ -2,7 +2,7 @@ clear;
 close all;
 
 % Global variables
-file = '../log/rasbpi_layout.csv';
+file = '../log/batarang.csv';
 outputname = '../img/best_fitness.png';
 
 % Read in data

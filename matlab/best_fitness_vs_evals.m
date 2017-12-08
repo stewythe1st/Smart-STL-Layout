@@ -2,7 +2,7 @@ clear;
 close all;
 
 % Global variables
-file = '../log/rasbpi_layout.csv';
+file = '../log/batarang.csv';
 outputname = '../img/fitness_vs_evals.png';
 
 % Read in data
@@ -20,12 +20,12 @@ fig = figure();
 
 % Plot data
 hold on;
-plot(best_data(:,2),best_data(:,4),'--','color','blue');
+plot(best_data(:,2),best_data(:,4),':','color','blue');
 plot(best_data(:,2),best_data(:,5),'-','color','blue');
 hold off;
 xlabel('Generation');
 ylabel('Fitness');
-ylim([-1500,max(5)+100]);
+ylim([-1000,max(5)+100]);
 title(['Fitness vs Evals for Best Run (run ' num2str(best_run) ')']);
 
 % Save image
